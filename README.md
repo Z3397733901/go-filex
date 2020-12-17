@@ -1,6 +1,6 @@
 # go-filex
 golang file扩展库
-比库旨在简化golang文件操作
+此库旨在简化golang文件操作
 
 下载:
 ```
