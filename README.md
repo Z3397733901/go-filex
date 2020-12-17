@@ -4,7 +4,7 @@ golang file扩展库
 
 下载:
 ```
-go get https://github.com/Z3397733901/go-filex
+go get github.com/weili71/go-filex
 ```
 例子：
 ```golang

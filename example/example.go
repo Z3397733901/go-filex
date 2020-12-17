@@ -1,8 +1,8 @@
 package main
 
 import (
-	"filex"
 	"fmt"
+	"github.com/weili71/go-filex"
 	"os"
 )
 
