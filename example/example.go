@@ -1,13 +1,3 @@
-# go-filex
-golang file扩展库
-比库旨在简化golang文件操作
-
-下载:
-```
-go get https://github.com/Z3397733901/go-filex
-```
-例子：
-```golang
 package main
 
 import (
@@ -26,4 +16,3 @@ func main() {
 	textFile.AppendText(osFile,"hello!\n")
 	osFile.Close()
 }
-```
