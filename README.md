@@ -1,8 +1,8 @@
 # go-filex
 golang file扩展库
-此库旨在简化golang文件操作,api与java类似
+此库旨在简化golang文件操作，api与java.lang.File类似 
 
-下载:
+安装:
 ```
 go get github.com/weili71/go-filex
 ```

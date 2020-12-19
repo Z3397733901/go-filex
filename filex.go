@@ -10,11 +10,11 @@ import (
 )
 
 type Filex struct {
-	pathname string
+	Pathname string
 }
 
 func NewFile(pathname string) *Filex {
-	return &Filex{pathname: pathname}
+	return &Filex{Pathname: pathname}
 }
 
 func NewFile1(parent, child string) *Filex {
@@ -22,24 +22,24 @@ func NewFile1(parent, child string) *Filex {
 }
 
 func NewFile2(parent *Filex, child string) *Filex {
-	return NewFile(filepath.Join(parent.pathname, child))
+	return NewFile(filepath.Join(parent.Pathname, child))
 }
 
 var PathSeparator = string(os.PathSeparator)
 
 func (f *Filex) Walk(walkFn filepath.WalkFunc) error {
-	return filepath.Walk(f.pathname, walkFn)
+	return filepath.Walk(f.Pathname, walkFn)
 }
 
 func (f *Filex) VolumeName() string {
-	return filepath.VolumeName(f.pathname)
+	return filepath.VolumeName(f.Pathname)
 }
 
 func (f *Filex) CanonicalPath() string {
 	if PathSeparator == "/" {
-		return strings.ReplaceAll(f.pathname, "\\", PathSeparator)
+		return strings.ReplaceAll(f.Pathname, "\\", PathSeparator)
 	} else {
-		canonicalPath := strings.ReplaceAll(f.pathname, "/", PathSeparator)
+		canonicalPath := strings.ReplaceAll(f.Pathname, "/", PathSeparator)
 		b, _ := regexp.MatchString(`^[a-zA-Z]:.*$`, canonicalPath)
 		if b {
 			return strings.ToUpper(canonicalPath[0:1]) + canonicalPath[1:]
@@ -49,16 +49,16 @@ func (f *Filex) CanonicalPath() string {
 }
 
 func (f *Filex) InvariantSeparatorsPath() string {
-	return strings.ReplaceAll(f.pathname, "\\", "/")
+	return strings.ReplaceAll(f.Pathname, "\\", "/")
 }
 func (f *Filex) ListFiles() []*Filex {
 	var listFiles []*Filex
-	info, err := ioutil.ReadDir(f.pathname)
+	info, err := ioutil.ReadDir(f.Pathname)
 	if err != nil {
 		return listFiles
 	}
 	for _, fileInfo := range info {
-		childFile := &Filex{pathname: filepath.Join(f.pathname, fileInfo.Name())}
+		childFile := &Filex{Pathname: filepath.Join(f.Pathname, fileInfo.Name())}
 		listFiles = append(listFiles, childFile)
 	}
 	return listFiles
@@ -66,18 +66,18 @@ func (f *Filex) ListFiles() []*Filex {
 
 func (f *Filex) List() []string {
 	var list []string
-	info, err := ioutil.ReadDir(f.pathname)
+	info, err := ioutil.ReadDir(f.Pathname)
 	if err != nil {
 		return list
 	}
 	for _, fileInfo := range info {
-		list = append(list, filepath.Join(f.pathname, fileInfo.Name()))
+		list = append(list, filepath.Join(f.Pathname, fileInfo.Name()))
 	}
 	return list
 }
 
 func (f *Filex) Parent() string {
-	return filepath.Dir(f.pathname)
+	return filepath.Dir(f.Pathname)
 }
 
 func (f *Filex) ParentFile() *Filex {
@@ -85,7 +85,7 @@ func (f *Filex) ParentFile() *Filex {
 }
 
 func (f *Filex) IsExist() bool {
-	_, err := os.Stat(f.pathname)
+	_, err := os.Stat(f.Pathname)
 	if err == nil {
 		return true
 	}
@@ -96,7 +96,7 @@ func (f *Filex) IsExist() bool {
 }
 
 func (f *Filex) IsDir() bool {
-	info, err := os.Stat(f.pathname)
+	info, err := os.Stat(f.Pathname)
 	if err != nil {
 		return false
 	}
@@ -104,7 +104,7 @@ func (f *Filex) IsDir() bool {
 }
 
 func (f *Filex) IsFile() bool {
-	info, err := os.Stat(f.pathname)
+	info, err := os.Stat(f.Pathname)
 	if err != nil {
 		return false
 	}
@@ -112,7 +112,7 @@ func (f *Filex) IsFile() bool {
 }
 
 func (f *Filex) Name() string {
-	pathname := strings.ReplaceAll(f.pathname, "\\", "/")
+	pathname := strings.ReplaceAll(f.Pathname, "\\", "/")
 	index := strings.LastIndex(pathname, "/")
 	if index < 0 {
 		index = -1
@@ -121,7 +121,7 @@ func (f *Filex) Name() string {
 }
 
 func (f *Filex) Extension() string {
-	return filepath.Ext(f.pathname)
+	return filepath.Ext(f.Pathname)
 }
 
 func (f *Filex) NameWithoutExtension() string {
@@ -129,27 +129,27 @@ func (f *Filex) NameWithoutExtension() string {
 }
 
 func (f *Filex) Delete() error {
-	return os.Remove(f.pathname)
+	return os.Remove(f.Pathname)
 }
 
 func (f *Filex) Create() (*os.File, error) {
-	return os.Create(f.pathname)
+	return os.Create(f.Pathname)
 }
 
 func (f *Filex) Rename(newpath string) error {
-	return os.Rename(f.pathname, newpath)
+	return os.Rename(f.Pathname, newpath)
 }
 
 func (f *Filex) Open() (*os.File, error) {
-	return os.Open(f.pathname)
+	return os.Open(f.Pathname)
 }
 
 func (f *Filex) OpenFile(flag int, perm os.FileMode) (*os.File, error) {
-	return os.OpenFile(f.pathname, flag, perm)
+	return os.OpenFile(f.Pathname, flag, perm)
 }
 
 func (f *Filex) Length() int64 {
-	info, err := os.Stat(f.pathname)
+	info, err := os.Stat(f.Pathname)
 	if err != nil {
 		return 0
 	}
@@ -157,7 +157,7 @@ func (f *Filex) Length() int64 {
 }
 
 func (f *Filex) LastModified() time.Time {
-	info, err := os.Stat(f.pathname)
+	info, err := os.Stat(f.Pathname)
 	if err != nil {
 		return time.Time{}
 	}
@@ -165,7 +165,7 @@ func (f *Filex) LastModified() time.Time {
 }
 
 func (f *Filex) Mode() os.FileMode {
-	info, err := os.Stat(f.pathname)
+	info, err := os.Stat(f.Pathname)
 	if err != nil {
 		return 0
 	}
@@ -173,23 +173,23 @@ func (f *Filex) Mode() os.FileMode {
 }
 
 func (f *Filex) MkdirAll(perm os.FileMode) error {
-	return os.MkdirAll(f.pathname, perm)
+	return os.MkdirAll(f.Pathname, perm)
 }
 
 func (f *Filex) Mkdir(perm os.FileMode) error {
-	return os.Mkdir(f.pathname, perm)
+	return os.Mkdir(f.Pathname, perm)
 }
 
 func (f *Filex) Write(data []byte, perm os.FileMode) error {
-	return ioutil.WriteFile(f.pathname, data, perm)
+	return ioutil.WriteFile(f.Pathname, data, perm)
 }
 
 func (f *Filex) WriteString(data string, perm os.FileMode) error {
-	return ioutil.WriteFile(f.pathname, []byte(data), perm)
+	return ioutil.WriteFile(f.Pathname, []byte(data), perm)
 }
 
 func (f *Filex) ReadAll() ([]byte, error) {
-	return ioutil.ReadFile(f.pathname)
+	return ioutil.ReadFile(f.Pathname)
 }
 
 func (f *Filex) ReadAllString() (string, error) {
